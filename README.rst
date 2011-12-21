@@ -17,7 +17,7 @@ Installation
 This requires a patched version of django SHOP (https://github.com/jrief/django-shop/tree/variations)
 which offers a simpler interface to products variations.
 
-* Add the app to your INSTALLED_APPS in your settings.py
+* Add `shop_productvariations` to your INSTALLED_APPS in your settings.py.
 * Add `shop_productvariations.cart_modifier.ProductOptionsModifier` to your
   `SHOP_CART_MODIFIERS` setting.
 
@@ -28,6 +28,11 @@ Usage
 Change your code
 * derive your product's model definition from
  `shop_productvariations.models.VariableProduct`.
+* add to your urls.py::
+    url(r'^shop/products/(?P<slug>[0-9A-Za-z-_.//]+)/$', 
+        VariableProductDetailView.as_view(),
+        name='my_product_detail'
+    ),
 * run `manage.py schemamigration` for your app and shop_productvariations and 
   migrate those schemas.
 * Override django-shop's `product_detail.html` template and add selection
@@ -37,8 +42,8 @@ In the admin view
 * create an Option group.
 * add options and the corresponding price to the group.
 * add a Text option.
-* choose which Text options and/or which Option groups shall be available for
-  each specific products kind.
+* choose which Text options and/or Option groups shall be available for
+  each specific kind of products in your shop.
 
 
 The product_detail.html template
@@ -62,7 +67,7 @@ Next create the drop down lists of OptionsGroups and Options:
 
 ::
 
-   <form method="post" action="{% url your_product_detail object.slug %}">{% csrf_token %}
+   <form method="post" action="{% url my_product_detail object.slug %}">{% csrf_token %}
    {% with option_groups=object|get_option_groups %}
      {% if option_groups %}
      <div>
@@ -104,4 +109,4 @@ Contributing
 
 Feel free to fork this project on github, send pull requests...
 development discussion happends on the django SHOP mailing list
-(django-shop@googlegroups.com)
+https://groups.google.com/forum/#!forum/django-shop
