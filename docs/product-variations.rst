@@ -18,7 +18,8 @@ By using the built-in variations, the product model itself, may specify any kind
 of thinkable variations. This variation model transparently integrates into the
 checkout process of the shop.
 
-The benefits for built-in variations::
+The benefits for built-in variations:
+
 * The variation definition is part of the product model.
 * Any kind of information can be stored together with the product.
 * Identical variations are always serialized to the same string, so identical
