@@ -4,7 +4,7 @@ How to add variations to a product
 From django-shop-simplevariations to django-shop-productvariations
 ------------------------------------------------------------------
 django-shop ships with an additional module (django-shop-simplevariations) to
-add two kind of variations: 'Option group' and 'Text option'. This module can
+add two kind of variations: ``Option group`` and ``Text option``. This module can
 be used as an add on for any kind of product. The problem however is, that all
 variations are stored in relational models, making it difficult to move a
 product item from the cart to the order or vice versa. When implementing
