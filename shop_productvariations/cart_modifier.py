@@ -1,4 +1,5 @@
 #-*- coding: utf-8 -*-
+from decimal import Decimal
 from shop.cart.cart_modifiers_base import BaseCartModifier
 
 class ProductOptionsModifier(BaseCartModifier):
@@ -14,8 +15,8 @@ class ProductOptionsModifier(BaseCartModifier):
         # process option_groups as passed through the variation object
         if cart_item.variation.has_key('option_groups'):
             for value in cart_item.variation['option_groups'].itervalues():
-                label = value['name'] + ': ' + value['option'].name
-                price = value['option'].price * cart_item.quantity
+                label = value['name'] + ': ' + value['option']['name']
+                price = Decimal(value['option']['price']) * cart_item.quantity
                 # Don't forget to update the running total!
                 cart_item.current_total += price
                 cart_item.extra_price_fields.append((label, price))
@@ -24,7 +25,7 @@ class ProductOptionsModifier(BaseCartModifier):
         if cart_item.variation.has_key('text_options'):
             for value in cart_item.variation['text_options'].itervalues():
                 label = value['name'] + ': ' + value['text']
-                price = value['price'] * len(value['text']) * cart_item.quantity
+                price = Decimal(value['price']) * len(value['text']) * cart_item.quantity
                 # Don't forget to update the running total!
                 cart_item.current_total += price
                 cart_item.extra_price_fields.append((label, price))
