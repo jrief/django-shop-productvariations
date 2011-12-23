@@ -2,6 +2,7 @@
 from decimal import Decimal
 from shop.cart.cart_modifiers_base import BaseCartModifier
 
+
 class ProductOptionsModifier(BaseCartModifier):
     '''
     This modifier adds an extra field to the cart to let the lineitem "know"
