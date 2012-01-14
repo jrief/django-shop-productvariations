@@ -1,19 +1,30 @@
 # -*- coding: utf-8 -*-
-from django.shortcuts import redirect
-from shop.views import ShopDetailView
 from shop.util.cart import get_or_create_cart
-from shop_productvariations.models import VariableProduct, Option
+from models import VariableProduct, Option
 
 
-class VariableProductDetailView(ShopDetailView):
+class ProductDetailViewMixin(object):
     """
-    Called whenever the product's form is invoked
+    Mixin detail view when using ProductVariations
     """
-   
     def post(self, *args, **kwargs):
-        self.add_to_cart()
-        return redirect('product_list')
+        super(ProductDetailViewMixin, self).post(*args, **kwargs)
+        if self.request.POST['product_action'] == 'add_to_cart':
+            self.add_to_cart()
 
+    def add_to_cart(self):
+        product = self.get_object()
+        if hasattr(self, 'get_variation') and callable(self.get_variation):
+            variation = self.get_variation(product)
+        else:
+            variation = None
+        product_quantity = self.request.POST.get('add_item_quantity')
+        if not product_quantity:
+            product_quantity = 1
+        cart = get_or_create_cart(self.request)
+        cart.add_product(product, product_quantity, variation)
+        cart.save()
+    
     def get_variation(self, product):
         """
         The post request contains information about the chosen variation.
@@ -41,14 +52,3 @@ class VariableProductDetailView(ShopDetailView):
                 value['text'] = self.request.POST[key]
                 variation['text_options'][text_option.id] = value
         return variation
-
-    def add_to_cart(self):
-        pk = int(self.request.POST['add_item_id'])
-        product = self.get_object()
-        variation = self.get_variation(product)
-        product_quantity = self.request.POST.get('add_item_quantity')
-        if not product_quantity:
-            product_quantity = 1
-        cart = get_or_create_cart(self.request)
-        cart.add_product(product, product_quantity, variation)
-        cart.save()

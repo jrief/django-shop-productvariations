@@ -54,6 +54,7 @@ class OptionGroup(models.Model):
         options = Option.objects.filter(group=self)
         return options
 
+
 class Option(models.Model):
     '''
     A product option. Example: Red, 10.0; Green: 20.0; Blue, 30.0;
