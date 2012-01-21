@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from shop.util.cart import get_or_create_cart
-from models import VariableProduct, Option
+from models import Option
 
 
 class ProductDetailViewMixin(object):
