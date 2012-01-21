@@ -1,17 +1,13 @@
 # -*- coding: utf-8 -*-
 from decimal import Decimal
-from jsonfield.fields import JSONField
 from django.test import TestCase
 from django.contrib.auth.models import User
-from django.core.serializers.json import DjangoJSONEncoder
-from django.http import HttpResponseRedirect
 from django.utils import simplejson as json
-from shop.models import Cart, CartItem
 from shop_productvariations.models import Option, OptionGroup, TextOption
 from shop.views.cart import CartDetails
 from shop.tests.util import Mock
-from project.models import DiaryProduct
-from project.views import DiaryDetailView
+from models import DiaryProduct
+from views import DiaryDetailView
 
 
 class ProductVariationsTest(TestCase):    
@@ -45,32 +41,21 @@ class ProductVariationsTest(TestCase):
         view = DiaryDetailView()
         setattr(view, 'object', None)
         tmp = view.get_template_names()
-        self.assertEqual(len(tmp), 1)
+        self.assertGreaterEqual(len(tmp), 1)
 
-    def test_add_to_cart(self):
-        request = Mock()
-        setattr(request, 'is_ajax', lambda: False)
-        setattr(request, 'user', self.user)
-        
-        # first, add the product together with its variations
+    def test_add_to_cart_using_post(self):
+        # create form data with a product containing variations and simulate POST
         post = {
+            'product_action': 'add_to_cart',
             'add_item_id': self.product.id,
             'add_item_quantity': 1,
             'add_item_option_group_1': 2, # Color: green
             'add_item_text_option_1': 'Doctor Diary', # Engraving
         }
-        setattr(request, 'POST', post)
-        diary_view = DiaryDetailView(request=request, kwargs={'pk': self.product.id})
-        setattr(diary_view, 'object', None)
-        ret = diary_view.post()
-        self.assertTrue(isinstance(ret, HttpResponseRedirect))
+        self._add_to_cart(post)
+        ret = self._get_from_cart()
 
-        # then check if the product is in the cart
-        request = Mock()
-        setattr(request, 'user', self.user)
-        cart_view = CartDetails(request=request)
-        ret = cart_view.get_context_data()
-        self.assertNotEqual(ret, None)
+        # check if the product is in the cart
         self.assertEqual(len(ret['cart_items']), 1)
         values = ret['cart_items'].values()[0]
         self.assertEqual(values['product_id'], self.product.id)
@@ -80,13 +65,29 @@ class ProductVariationsTest(TestCase):
         self.assertEqual(variation['option_groups']['1']['option']['name'], 'green')
         self.assertEqual(variation['text_options']['1']['text'], 'Doctor Diary')
 
-        # add the same item again
-        diary_view.post()
-        ret = cart_view.get_context_data()
-        self.assertNotEqual(ret, None)
-        self.assertEqual(len(ret['cart_items']), 1)
+        # add the same product with missing quantity field
+        del post['add_item_quantity']
+        self._add_to_cart(post)
+        ret = self._get_from_cart()
         values = ret['cart_items'].values()[0]
-        self.assertEqual(values['quantity'], 2)
+        self.assertEqual(values['quantity'], 2)        
+
+    def _add_to_cart(self, post):
+        request = Mock()
+        setattr(request, 'is_ajax', lambda: False)
+        setattr(request, 'user', self.user)
+        setattr(request, 'POST', post)
+        view = DiaryDetailView(request=request, kwargs={'pk': self.product.id})
+        setattr(view, 'object', None)
+        view.post()
+        
+    def _get_from_cart(self):
+        request = Mock()
+        setattr(request, 'user', self.user)
+        view = CartDetails(request=request)
+        ret = view.get_context_data()
+        self.assertNotEqual(ret, None)
+        return ret
 
     def _create_options(self):
         option_group = OptionGroup(name='Color', slug='color')
