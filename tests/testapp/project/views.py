@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from django.shortcuts import redirect
-from shop_productvariations.views import VariableProductDetailView
+from shop.views.product import ProductDetailView
+from shop_productvariations.views import ProductDetailViewMixin
 from models import DiaryProduct
 
 
-class DiaryDetailView(VariableProductDetailView):
+class DiaryDetailView(ProductDetailViewMixin, ProductDetailView):
     """
     This view handles displaying the detail view for test product Diary 
     """
