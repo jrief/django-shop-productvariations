@@ -8,8 +8,8 @@ add two kind of variations: ``Option group`` and ``Text option``. This module ca
 be used as an add on for any kind of product. The problem however is, that all
 variations are stored in relational models, making it difficult to move a
 product item from the cart to the order or vice versa. When implementing
-a wishlist, additional tables would have to be added, in order to keep track
-of the kind of desired variation.
+functionality for, say a wishlist or a comparison cart, additional tables would
+have to be added, in order to keep track of the kind of desired variation.
 
 When adding two or more products to the cart, it is quite difficult to determine
 if a desired product is equal, or a variation of an existing product, and thus
@@ -26,7 +26,7 @@ The benefits for built-in variations:
 * Identical variations are always serialized to the same string, so identical
   product variations will sum up in CartItem, whereas different variations of 
   the same product create individual CartItem entries.
-* A customer may readd an already shipped item from the list of orders to the 
+* A customer may re-add an already shipped item from the list of orders to the 
   cart.
 * The product model must not deal with problems, such as adding variation
   details to the CartItem, OrderItem or an external WishItem.
