@@ -14,8 +14,8 @@ def get_options(product):
     """Returns all options for the given option group."""
     return product.option_set.all()
 
-@register.filter
-def describe_textoptions(label=None, variation):
+@register.simple_tag
+def describe_textoptions(variation):
     '''
     From the given variation object, build a variations description to be used 
     in simple text fields.
@@ -26,9 +26,7 @@ def describe_textoptions(label=None, variation):
         for value in variation['text_options'].itervalues():
             if len(value['text'])>0:
                 labels.append(value['name'] + ': ' + value['text'])
-    if label is not None:
-        label += '. '
-    return label + '; '.join(labels)
+    return '; '.join(labels)
 
 @register.filter
 def adjust_textoptions_price(price, variation):
