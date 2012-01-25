@@ -101,7 +101,8 @@ INSTALLED_APPS = (
     'polymorphic', # We need polymorphic installed for the shop
     'shop', # The django SHOP application
     'shop.addressmodel',
-    'shop_productvariations',
+    'shop_product_optiongroups',
+    'shop_product_textoptions',
     'project', # the test project application
 )
 
