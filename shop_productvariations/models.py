@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
-from shop.models.productmodel import Product
 from shop.util.fields import CurrencyField
 
 
@@ -75,7 +74,7 @@ class Option(models.Model):
 # A product definition with variable options
 #===============================================================================
 
-class VariableProduct(Product):
+class ProductVariationsMixin(models.Model):
     """
     A product definition with variable options
     """
