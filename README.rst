@@ -10,7 +10,7 @@ to add a self contained variation to a product.
 Currently two variation variants are implemented
 
 Option groups
--------------
+=============
 One or more groups of options may be assigned to a product. Such a group can be
 something like color, wrapping paper, etc. Each of these groups can have two or
 more options, say for group color: red, pink, yellow, magenta.
@@ -22,7 +22,7 @@ While filling the shopping cart, the customer then may chose one of these
 options using a select box.
 
 Text options
-------------
+============
 One or more text options may be assigned to a product. Such an option can be
 something such as an individual engraving or a congratulation message. An
 additional price may be added per character.
@@ -32,8 +32,7 @@ message to the product he intends to buy.
 
 
 Installation
-============
-
+------------
 This requires a patched version of django SHOP (https://github.com/jrief/django-shop/tree/variations)
 which offers a simpler interface to products variations.
 
@@ -44,13 +43,13 @@ INSTALLED_APPS of your settings.py.
 SHOP_CART_MODIFIERS of your settings.py.
 
 Usage
-=====
+-----
 
 Run schemamigration for `shop_product_optiongroups` and `shop_product_textoptions`
 and migrate those schemas.
 
 Change your code
-----------------
+================
 
 Add to your product model one or both of these mixin classes::
 
@@ -110,7 +109,7 @@ for this purpose::
 
 
 Fill your database
-------------------
+==================
 
 * Log into the admin interface.
 * Go to Shop_Product_Optiongroups.
