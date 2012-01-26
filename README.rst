@@ -37,10 +37,10 @@ This requires a patched version of django SHOP (https://github.com/jrief/django-
 which offers a simpler interface to products variations.
 
 * Add `shop_product_optiongroups` and/or to `shop_product_textoptions` your
-INSTALLED_APPS of your settings.py.
-* Add `shop_product_optiongroups.cart_modifier.OptionGroupsCartModifier` and/or
-`shop_product_textoptions.cart_modifier.TextOptionsOptionsCartModifier` to your
-SHOP_CART_MODIFIERS of your settings.py.
+  INSTALLED_APPS of your settings.py.
+* Add `shop_product_optiongroups.cart_modifier.OptionGroupsCartModifier`
+  and/or `shop_product_textoptions.cart_modifier.TextOptionsOptionsCartModifier`
+  to your SHOP_CART_MODIFIERS of your settings.py.
 
 Usage
 -----
