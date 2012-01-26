@@ -107,7 +107,10 @@ INSTALLED_APPS = (
 )
 
 # The shop settings:
-SHOP_CART_MODIFIERS= ['shop_productvariations.cart_modifier.ProductOptionsModifier']
+SHOP_CART_MODIFIERS= [
+    'shop_product_optiongroups.cart_modifier.OptionGroupsCartModifier',
+    'shop_product_textoptions.cart_modifier.TextOptionsOptionsCartModifier',
+]
 SHOP_SHIPPING_BACKENDS=['shop.shipping.backends.flat_rate.FlatRateShipping']
 
 # Shop module settings
