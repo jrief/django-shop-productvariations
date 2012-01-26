@@ -2,13 +2,33 @@
 django SHOP - Variable Products
 ===============================
 
-This app's purpose is to provide a products base class which offers two simple
-product variations variants. It can be used as a stand-alone app or as an 
-example how to add any complex variaion to a product.
+This app's purpose is to provide two product mixin classes together with two 
+corresponding view mixin classes. They offers two simple product variations
+variants. They can be used as a stand-alone app or as a starting point how
+to add a self contained variation to a product.
 
-It considers variations as a {label: value} entry in the products detail view,
-so it is perfect for things like differently priced colors, or customized
-text on the product itself.
+Currently two variation variants are implemented
+
+Option groups
+-------------
+One or more groups of options may be assigned to a product. Such a group can be
+something like color, wrapping paper, etc. Each of these groups can have two or
+more options, say for group color: red, pink, yellow, magenta.
+
+The shop owner may specify for each product, which option groups shall belong to
+it. To each option, an additional price can be added. 
+
+While filling the shopping cart, the customer then may chose one of these
+options using a select box.
+
+Text options
+------------
+One or more text options may be assigned to a product. Such an option can be
+something such as an individual engraving or a congratulation message. An
+additional price may be added per character.
+
+While filling the shopping cart, the customer then may add an individual text
+message to the product he intends to buy.
 
 
 Installation
@@ -17,92 +37,87 @@ Installation
 This requires a patched version of django SHOP (https://github.com/jrief/django-shop/tree/variations)
 which offers a simpler interface to products variations.
 
-* Add `shop_productvariations` to your INSTALLED_APPS in your settings.py.
-* Add `shop_productvariations.cart_modifier.ProductOptionsModifier` to your
-  `SHOP_CART_MODIFIERS` setting.
-
+* Add `shop_product_optiongroups` and/or to `shop_product_textoptions` your
+INSTALLED_APPS of your settings.py.
+* Add `shop_product_optiongroups.cart_modifier.OptionGroupsCartModifier` and/or
+`shop_product_textoptions.cart_modifier.TextOptionsOptionsCartModifier` to your
+SHOP_CART_MODIFIERS of your settings.py.
 
 Usage
 =====
 
+Run schemamigration for `shop_product_optiongroups` and `shop_product_textoptions`
+and migrate those schemas.
+
 Change your code
-* derive your product's model definition from
- `shop_productvariations.models.VariableProduct`.
-* add to your urls.py::
-    url(r'^shop/products/(?P<slug>[0-9A-Za-z-_.//]+)/$', 
-        VariableProductDetailView.as_view(),
-        name='my_product_detail'
-    ),
-* run `manage.py schemamigration` for your app and shop_productvariations and 
-  migrate those schemas.
-* Override django-shop's `product_detail.html` template and add selection
-  elements so that your users can select variations.
+----------------
 
-In the admin view
-* create an Option group.
-* add options and the corresponding price to the group.
-* add a Text option.
-* choose which Text options and/or Option groups shall be available for
-  each specific kind of products in your shop.
+Add to your product model one or both of these mixin classes::
+
+   from shop.models.productmodel import Product
+   from shop_product_optiongroups.models import ProductOptionGroupsMixin
+   from shop_product_textoptions.models import ProductTextOptionsMixin
+   
+   class MyProduct(Product, ProductOptionGroupsMixin, ProductTextOptionsMixin):
+       ...
 
 
-The product_detail.html template
-================================
-The simple `product_detail.html` that ships with the shop doesn't take
-variations into consideration.
+Add to your product's detail view one or both of these mixin classes::
 
-Therefore you need to override the template. django-shop-productvariations
-ships with two templatetags that help creating drop down lists so that a
-customer can actually chose variation.
+   from shop.views.product import ProductDetailView
+   from shop_product_optiongroups.views import ProductOptionGroupsViewMixin
+   from shop_product_textoptions.views import ProductTextOptionsViewMixin
+   
+   class MyProductDetailView(ProductOptionGroupsViewMixin, \
+      ProductTextOptionsViewMixin, ProductDetailView):
 
-First make sure to load the simplevariation templatetags:
 
-::
+Override django-shop's `product_detail.html` template and add selection elements
+so that your users can select these variations. Use the prepared template tags
+for this purpose::
 
-  {% load simplevariation_tags %}
-  <h1>Product detail:</h1>
-  ...
-
-Next create the drop down lists of OptionsGroups and Options:
-
-::
-
-   <form method="post" action="{% url my_product_detail object.slug %}">{% csrf_token %}
+   {% load product_optiongroups product_textoptions %}
+   ...
    {% with option_groups=object|get_option_groups %}
-     {% if option_groups %}
-     <div>
-       <h2>Variations:</h2>
-       {% for option_group in option_groups %}
-       <label for="add_item_option_group_{{ option_group.id }}">{{ option_group.name }}:</label>
-       {% with option_group|get_options as options %}
-       <select name="add_item_option_group_{{ option_group.id }}">
-         {% for option in options %}
-         <option value="{{ option.id }}">{{ option.name }}</option>
-         {% endfor %}
-       </select>
-       {% endwith %}
+   {% if option_groups %}
+   <div>
+     <h2>Variations:</h2>
+     {% for option_group in option_groups %}
+     <label for="add_item_option_group_{{ option_group.id }}">{{ option_group.name }}:</label>
+     {% with option_group|get_options as options %}
+     <select name="add_item_option_group_{{ option_group.id }}">
+       {% for option in options %}
+       <option value="{{ option.id }}">{{ option.name }}</option>
        {% endfor %}
-     </div>
-     {% endif %}
+     </select>
+     {% endwith %}
+     {% endfor %}
+   </div>
+   {% endif %}
    {% endwith %}
+   ...
    {% with text_options=object.text_options.all %}
-     {% if text_options %}
-     <div>
-       <h2>Text options:</h2>
-       {% for text_option in text_options %}
-       <label for="add_item_text_option_{{ text_option.id }}">{{ text_option.name }}:</label>
-       <input type="text" name="add_item_text_option_{{ text_option.id }}" value="" />
-       {% endfor %}
-     </div>
-     {% endif %}
+   {% if text_options %}
+   <div>
+     <h2>Text options:</h2>
+     {% for text_option in text_options %}
+     <label for="add_item_text_option_{{ text_option.id }}">{{ text_option.name }}:</label>
+     <input type="text" name="add_item_text_option_{{ text_option.id }}" value="" />
+     {% endfor %}
+   </div>
+   {% endif %}
    {% endwith %}
-     <p>
-       <input type="hidden" name="add_item_id" value="{{object.id}}">
-       <input type="hidden" name="add_item_quantity" value="1">
-       <button type="submit" name="add_to" value="cart">Add to cart</button>
-       <button type="submit" name="add_to" value="wishlist">Add to wishlist</button>  
-     </p>
-   </form>
+
+
+Fill your database
+------------------
+
+* Log into the admin interface.
+* Go to Shop_Product_Optiongroups.
+* Add an Option Group and add Options to this group.
+* Go to Shop_Product_Textoptions.
+* Add a Text Option.
+
 
 Contributing
 ============
