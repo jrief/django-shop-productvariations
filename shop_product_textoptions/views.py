@@ -6,16 +6,15 @@ class ProductTextOptionsViewMixin(object):
     DetailView Mixin class when using ProductTextOptionsMixin
     """
 
-    def get_variation(self, product):
+    def get_variation(self):
         """
         The post request contains information about the chosen variation.
         Recombine this with the information extracted from the OptionGroup
         for the given product
         """
-        variation = { 'text_options': {} }
-        basevar = super(ProductTextOptionsViewMixin, self).get_variation(product)
-        if basevar is not None:
-            variation.update(basevar)
+        variation = super(ProductTextOptionsViewMixin, self).get_variation()
+        variation.update({ 'text_options': {} })
+        product = self.get_object()
         for text_option in product.text_options.all():
             key = 'add_item_text_option_%s' % text_option.id
             if self.request.POST.has_key(key):

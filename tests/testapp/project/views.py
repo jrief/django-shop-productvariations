@@ -19,11 +19,11 @@ class DiaryDetailView(ProductOptionGroupsViewMixin, \
             self.add_to_cart()
 
     def add_to_cart(self):
-        product = self.get_object()
-        variation = self.get_variation(product)
+        variation = self.get_variation()
         product_quantity = self.request.POST.get('add_item_quantity')
         if not product_quantity:
             product_quantity = 1
+        product = self.get_object()
         cart = get_or_create_cart(self.request)
         cart.add_product(product, product_quantity, variation)
         cart.save()
@@ -40,11 +40,11 @@ class CalendarDetailView(ProductOptionGroupsViewMixin, ProductDetailView):
             self.add_to_cart()
 
     def add_to_cart(self):
-        product = self.get_object()
-        variation = self.get_variation(product)
+        variation = self.get_variation()
         product_quantity = self.request.POST.get('add_item_quantity')
         if not product_quantity:
             product_quantity = 1
+        product = self.get_object()
         cart = get_or_create_cart(self.request)
         cart.add_product(product, product_quantity, variation)
         cart.save()
