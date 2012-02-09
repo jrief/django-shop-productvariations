@@ -4,7 +4,7 @@ from django.db import models
 from shop.util.fields import CurrencyField
 
 
-class TextOption(models.Model):
+class TextOptionBase(models.Model):
     """
     This part of the option is selected by the merchant - it lets him/her "flag"
     a product as being able to receive some text as an option, and sets its
@@ -15,21 +15,13 @@ class TextOption(models.Model):
     price = CurrencyField(help_text='Price per character for this custom text')
     max_length = models.IntegerField()
     
-    class Meta:
+    class Meta(object):
+        abstract = True
         verbose_name = _('Text Option')
         verbose_name_plural = _('Text Options')
-        db_table = 'shop_product_textoptions'
+        #db_table = 'shop_product_textoptions'
 
     def __unicode__(self):
         return self.name
 
 
-class ProductTextOptionsMixin(models.Model):
-    """
-    A mixin for product definitions with text options
-    """
-    class Meta(object):
-        abstract = True
-        verbose_name = _('Product mixin with customizable text options')
-
-    text_options = models.ManyToManyField(TextOption, blank=True, null=True)
