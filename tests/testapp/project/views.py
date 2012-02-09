@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from shop.views.product import ProductDetailView
 from shop.util.cart import get_or_create_cart
-from shop_product_optiongroups.views import ProductOptionGroupsViewMixin
-from shop_product_textoptions.views import ProductTextOptionsViewMixin
+from shop_optiongroups.views import ProductOptionGroupsViewMixin
+from shop_textoptions.views import ProductTextOptionsViewMixin
 from models import DiaryProduct, CalendarProduct
 
 

@@ -3,8 +3,8 @@ from decimal import Decimal
 from django.test import TestCase
 from django.contrib.auth.models import User
 from django.utils import simplejson as json
-from shop_product_optiongroups.models import Option, OptionGroup
-from shop_product_textoptions.models import TextOption
+from shop_optiongroups.models import Option, OptionGroup
+from shop_textoptions.models import TextOption
 from shop.views.cart import CartDetails
 from shop.tests.util import Mock
 from models import DiaryProduct, CalendarProduct

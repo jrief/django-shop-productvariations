@@ -4,7 +4,7 @@ from django.contrib.admin.options import TabularInline, ModelAdmin
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from shop_product_optiongroups.models import Option, OptionGroup
+from shop_optiongroups.models import Option, OptionGroup
 
 
 class OptionInline(TabularInline):

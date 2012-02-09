@@ -101,15 +101,15 @@ INSTALLED_APPS = (
     'polymorphic', # We need polymorphic installed for the shop
     'shop', # The django SHOP application
     'shop.addressmodel',
-    'shop_product_optiongroups',
-    'shop_product_textoptions',
+    'shop_optiongroups',
+    'shop_textoptions',
     'project', # the test project application
 )
 
 # The shop settings:
 SHOP_CART_MODIFIERS= [
-    'shop_product_optiongroups.cart_modifier.OptionGroupsCartModifier',
-    'shop_product_textoptions.cart_modifier.TextOptionsOptionsCartModifier',
+    'shop_optiongroups.cart_modifier.OptionGroupsCartModifier',
+    'shop_textoptions.cart_modifier.TextOptionsOptionsCartModifier',
 ]
 SHOP_SHIPPING_BACKENDS=['shop.shipping.backends.flat_rate.FlatRateShipping']
 

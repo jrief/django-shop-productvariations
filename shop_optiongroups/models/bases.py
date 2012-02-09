@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from django.utils.translation import ugettext_lazy as _
-from django.conf import settings
 from django.db import models
 from shop.util.fields import CurrencyField
 from shop.util.loader import get_model_string
@@ -23,7 +22,6 @@ class OptionGroupBase(models.Model):
         abstract = True
         verbose_name = _('Option Group')
         verbose_name_plural = _('Option Groups')
-#        db_table = 'shop_product_option_groups'
 
     def __unicode__(self):
         return self.name
@@ -42,13 +40,12 @@ class OptionBase(models.Model):
     '''
     name = models.CharField(max_length=255)
     price = CurrencyField() # Can be negative
-    group = models.ForeignKey(get_model_string('OptionGroup'))
+    group = models.ForeignKey(get_model_string('OptionGroup', namespace='shop_optiongroups'))
 
     class Meta(object):
         abstract = True
         verbose_name = _('Group Option')
         verbose_name_plural = _('Group Options')
-#        db_table = 'shop_product_options'
 
     def __unicode__(self):
         return self.name

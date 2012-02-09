@@ -2,7 +2,7 @@
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django.db import models
-from shop.util.loader import load_class
+from shop.util.loader import load_class, get_model_string
 from bases import OptionGroupBase, OptionBase
 
 #===============================================================================
@@ -12,23 +12,22 @@ from bases import OptionGroupBase, OptionBase
 class OptionGroup(OptionGroupBase):
     class Meta(object):
         abstract = False
-        app_label = 'shop'
+        app_label = 'shop_optiongroups'
 
 
 class Option(OptionBase):
     class Meta(object):
         abstract = False
-        app_label = 'shop'
+        app_label = 'shop_optiongroups'
+
+OPTIONGROUP_MODEL = getattr(settings, 'SHOP_OPTIONGROUP_MODEL',
+    'shop_optiongroups.models.OptionGroup')
+OptionGroup = load_class(OPTIONGROUP_MODEL, 'SHOP_OPTIONGROUP_MODEL')
 
 
-VARIATION_OPTIONGROUP_MODEL = getattr(settings, 'VARIATION_OPTIONGROUP_MODEL',
-    'shop_product_optiongroups.models.OptionGroup')
-OptionGroup = load_class(VARIATION_OPTIONGROUP_MODEL, 'VARIATION_OPTIONGROUP_MODEL')
-
-
-VARIATION_OPTION_MODEL = getattr(settings, 'VARIATION_OPTION_MODEL',
-    'shop_product_optiongroups.models.Option')
-Option = load_class(VARIATION_OPTION_MODEL, 'VARIATION_OPTION_MODEL')
+OPTION_MODEL = getattr(settings, 'SHOP_OPTION_MODEL',
+    'shop_optiongroups.models.Option')
+Option = load_class(OPTION_MODEL, 'SHOP_OPTION_MODEL')
 
 
 class ProductOptionGroupsMixin(models.Model):

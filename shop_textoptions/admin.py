@@ -4,7 +4,7 @@ from django.contrib.admin.options import ModelAdmin
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from shop_product_textoptions.models import TextOption
+from shop_textoptions.models import TextOption
 
 
 class TextOptionAdmin(ModelAdmin):

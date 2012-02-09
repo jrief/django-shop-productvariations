@@ -19,7 +19,6 @@ class TextOptionBase(models.Model):
         abstract = True
         verbose_name = _('Text Option')
         verbose_name_plural = _('Text Options')
-        #db_table = 'shop_product_textoptions'
 
     def __unicode__(self):
         return self.name

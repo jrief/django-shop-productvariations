@@ -9,15 +9,15 @@ from bases import TextOptionBase
 class TextOption(TextOptionBase):
     class Meta:
         abstract = False
-        app_label = 'shop'
+        app_label = 'shop_textoptions'
 
     def __unicode__(self):
         return self.name
 
 
-VARIATION_TEXTOPTION_MODEL = getattr(settings, 'VARIATION_TEXTOPTION_MODEL',
-    'shop_product_textoptions.models.TextOptions')
-TextOptions = load_class(VARIATION_TEXTOPTION_MODEL, 'VARIATION_TEXTOPTION_MODEL')
+TEXTOPTION_MODEL = getattr(settings, 'SHOP_TEXTOPTION_MODEL',
+    'shop_textoptions.models.TextOption')
+TextOption = load_class(TEXTOPTION_MODEL, 'SHOP_TEXTOPTION_MODEL')
 
 
 class ProductTextOptionsMixin(models.Model):

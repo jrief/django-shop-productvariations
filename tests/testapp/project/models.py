@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from shop.models.productmodel import Product
-from shop_product_optiongroups.models import ProductOptionGroupsMixin
-from shop_product_textoptions.models import ProductTextOptionsMixin
+from shop_optiongroups.models import ProductOptionGroupsMixin
+from shop_textoptions.models import ProductTextOptionsMixin
 
 
 class DiaryProduct(Product, ProductOptionGroupsMixin, ProductTextOptionsMixin):

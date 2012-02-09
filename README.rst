@@ -36,26 +36,36 @@ Installation
 This requires a patched version of django SHOP (https://github.com/jrief/django-shop/tree/variations)
 which offers a simpler interface to products variations.
 
-* Add `shop_product_optiongroups` and/or to `shop_product_textoptions` your
-  INSTALLED_APPS of your settings.py.
-* Add `shop_product_optiongroups.cart_modifier.OptionGroupsCartModifier`
-  and/or `shop_product_textoptions.cart_modifier.TextOptionsOptionsCartModifier`
+* Add ``shop_optiongroups`` and/or to ``shop_textoptions`` your INSTALLED_APPS
+  of your settings.py.
+* Add ``shop_optiongroups.cart_modifier.OptionGroupsCartModifier``
+  and/or ``shop_textoptions.cart_modifier.TextOptionsOptionsCartModifier``
   to your SHOP_CART_MODIFIERS of your settings.py.
+
+Alternative models
+------------------
+You can easily override the current models with a customized options class
+derived from the abstract base classes ``shop_optiongroups.models.bases.OptionGroupBase``,
+``shop_optiongroups.models.bases.OptionBase`` and 
+``shop_textoptions.models.bases.TextOptionBase``. This gives you the possibility
+to add additional fields to your customized option model class.
+
+To enable this overriding, in ``settings.py`` point ``SHOP_OPTIONGROUP_MODEL``
+and/or ``SHOP_OPTION_MODEL`` and/or  ``SHOP_TEXTOPTION_MODEL`` to your class
+model.
 
 Usage
 -----
-
-Run schemamigration for `shop_product_optiongroups` and `shop_product_textoptions`
-and migrate those schemas.
+Run schemamigration for ``shop_optiongroups`` and ``shop_textoptions`` and
+migrate those schemas.
 
 Change your code
 ================
-
 Add to your product model one or both of these mixin classes::
 
    from shop.models.productmodel import Product
-   from shop_product_optiongroups.models import ProductOptionGroupsMixin
-   from shop_product_textoptions.models import ProductTextOptionsMixin
+   from shop_optiongroups.models import ProductOptionGroupsMixin
+   from shop_textoptions.models import ProductTextOptionsMixin
    
    class MyProduct(Product, ProductOptionGroupsMixin, ProductTextOptionsMixin):
        ...
@@ -64,8 +74,8 @@ Add to your product model one or both of these mixin classes::
 Add to your product's detail view one or both of these mixin classes::
 
    from shop.views.product import ProductDetailView
-   from shop_product_optiongroups.views import ProductOptionGroupsViewMixin
-   from shop_product_textoptions.views import ProductTextOptionsViewMixin
+   from shop_optiongroups.views import ProductOptionGroupsViewMixin
+   from shop_textoptions.views import ProductTextOptionsViewMixin
    
    class MyProductDetailView(ProductOptionGroupsViewMixin, \
       ProductTextOptionsViewMixin, ProductDetailView):
@@ -112,9 +122,9 @@ Fill your database
 ==================
 
 * Log into the admin interface.
-* Go to Shop_Product_Optiongroups.
+* Go to Shop_Optiongroups.
 * Add an Option Group and add Options to this group.
-* Go to Shop_Product_Textoptions.
+* Go to Shop_Textoptions.
 * Add a Text Option.
 
 
