@@ -5,10 +5,6 @@ from shop.util.fields import CurrencyField
 from shop.util.loader import get_model_string
 
 
-#===============================================================================
-# Multiple choice options
-#===============================================================================
-
 class OptionGroupBase(models.Model):
     '''
     A logical group of options
@@ -30,7 +26,7 @@ class OptionGroupBase(models.Model):
         '''
         A helper method to retrieve a list of options in this OptionGroup
         '''
-        options = get_model_string('Option').objects.filter(group=self)
+        options = get_model_string('Option', namespace='shop_optiongroups').objects.filter(group=self)
         return options
 
 

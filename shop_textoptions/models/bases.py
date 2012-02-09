@@ -10,9 +10,11 @@ class TextOptionBase(models.Model):
     a product as being able to receive some text as an option, and sets its
     price.
     """
-    name = models.CharField(max_length=255, help_text="A name for this option - this will be displayed to the user")
-    description = models.CharField(max_length=255, null=True, blank=True, help_text='A longer description for this option')
-    price = CurrencyField(help_text='Price per character for this custom text')
+    name = models.CharField(max_length=255,
+                help_text=_('A name for this option - this will be displayed to the user'))
+    description = models.CharField(max_length=255, null=True, blank=True,
+                help_text=_('A longer description for this option'))
+    price = CurrencyField(help_text=_('Price per character for this custom text'))
     max_length = models.IntegerField()
     
     class Meta(object):
