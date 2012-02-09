@@ -10,6 +10,7 @@ from shop_optiongroups.models import Option, OptionGroup
 class OptionInline(TabularInline):
     model = Option
 
+
 class OptionGroupAdmin(ModelAdmin):
     inlines = [OptionInline,]
     prepopulated_fields = {"slug": ("name",)}

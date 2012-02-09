@@ -6,7 +6,6 @@ register = template.Library()
 @register.filter
 def get_option_groups(product):
     """Returns all option groups for the given product."""
-    print product.options_groups.all()
     return product.options_groups.all()
 
 @register.filter
