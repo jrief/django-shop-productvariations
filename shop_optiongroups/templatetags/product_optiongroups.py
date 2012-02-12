@@ -9,9 +9,9 @@ def get_option_groups(product):
     return product.options_groups.all()
 
 @register.filter
-def get_options(product):
+def get_options(option_group):
     """Returns all options for the given option group."""
-    return product.option_set.all()
+    return option_group.get_options()
 
 @register.simple_tag
 def describe_optiongroups(variation):
