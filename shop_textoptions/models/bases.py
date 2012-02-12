@@ -11,9 +11,9 @@ class TextOptionBase(models.Model):
     price.
     """
     name = models.CharField(max_length=255,
-                help_text=_('A name for this option - this will be displayed to the user'))
+        help_text=_('A name for this option - this will be displayed to the user'))
     description = models.CharField(max_length=255, null=True, blank=True,
-                help_text=_('A longer description for this option'))
+        help_text=_('A longer description for this option'))
     price = CurrencyField(help_text=_('Price per character for this custom text'))
     max_length = models.IntegerField()
     
