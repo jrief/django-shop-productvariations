@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from django.utils.translation import ugettext_lazy as _
+from django.conf import settings
 from django.db import models
 from shop.util.fields import CurrencyField
-from shop.util.loader import get_model_string
+from shop.util.loader import get_model_string, load_class
 
 
 class OptionGroupBase(models.Model):
@@ -26,7 +27,10 @@ class OptionGroupBase(models.Model):
         '''
         A helper method to retrieve a list of options in this OptionGroup
         '''
-        options = get_model_string('Option', namespace='shop_optiongroups').objects.filter(group=self)
+        OPTION_MODEL = getattr(settings, 'SHOP_OPTION_MODEL',
+                               'shop_optiongroups.models.defaults.Option')
+        Option = load_class(OPTION_MODEL, 'SHOP_OPTION_MODEL')
+        options = Option.objects.filter(group=self)
         return options
 
 
