@@ -18,7 +18,7 @@ class OptionGroupAdmin(ModelAdmin):
         models.ManyToManyField: {'widget': FilteredSelectMultiple(
             verbose_name=_('grouped options'),
             is_stacked=False
-            )},
+        )},
     }
 
 admin.site.register(OptionGroup, OptionGroupAdmin)
