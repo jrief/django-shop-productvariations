@@ -4,16 +4,6 @@ from decimal import Decimal
 
 register = template.Library()
 
-@register.filter
-def get_option_groups(product):
-    """Returns all option groups for the given product."""
-    return product.options_groups.all()
-
-@register.filter
-def get_options(product):
-    """Returns all options for the given option group."""
-    return product.option_set.all()
-
 @register.simple_tag
 def describe_textoptions(variation):
     '''
